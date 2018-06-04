@@ -8,13 +8,15 @@ module.exports.init = function (io) {
         socket.on('log me', function (userId) {
 
             global_file.loggedUsers[userId] = socket.id;
+            console.log(userId+ " : " + socket.id);
 
         });
 
         socket.on('join', function (conversationId) {
-            if(!(socket.rooms.indexOf(conversationId)>=0)){
+            /*if(!(socket.rooms.indexOf(conversationId)>=0)){
                 socket.join(conversationId);
-            }
+            }*/
+            socket.join(conversationId);
         });
 
         socket.on('leave', function (conversationId) {
@@ -32,7 +34,7 @@ module.exports.init = function (io) {
 
                     toSend.name = user.name;
                     toSend.profilePic = user.profilePic;
-                    toSend.author = data.author;
+                    toSend.author = data.sender_id;
                     toSend.conversationId = data.conversationId;
                     toSend.message = data.message;
 

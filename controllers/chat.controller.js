@@ -11,42 +11,64 @@ module.exports.init = function (io) {
 
 };
 
-module.exports.getConversations = function (req, res) {
+module.exports.getConversations = function(req, res){
 
     const userId = req.body.id;
 
-    Conversation.find({ participants: userId})
-        .select('_id')
-        .exec(function (error, conversations) {
+    Conversation.find({participants:userId}, function (error, conversations) {
 
-            if(!error){
+        if(error){
+            res.send({success:false, message:error});
+        }else {
+            let length = conversations.length;
 
-                var fullConversations = [];
+            if(length === 0){
+                //has no conversations
+                res.send({success:true, numConversations:0});
+            }else {
+
+                let fullConversations = [];
 
                 conversations.forEach(function (conversation) {
 
-                    Message.find({'conversationId':conversation._id})
-                        .sort('-createdAt')
-                        .limit(1)
-                        .exec(function (error, message) {
+                    let w = "";
+                    if(conversation.participants.indexOf(userId) === 1){
+                        w = conversation.participants[0];
+                    }else{
+                        w = conversation.participants[1];
+                    }
 
-                            if(!error){
-                                fullConversations.push(message);
+                    User.findOne({_id:w}).select('name profilePic -_id').exec(function(err, result){
+                        if(!err){
+                            w = result;
+                            Message.findOne({'conversationId':conversation._id})
+                                .sort('-createdAt')
+                                .limit(1)
+                                .exec(function (error, message) {
 
-                                if(fullConversations.length === conversations.length){
-                                    res.send({success:true, conversations:fullConversations});
-                                }
-                            }
+                                    if(!error){
 
-                        });
+                                        let toSend = {};
+                                        toSend.message = message;
+                                        toSend.user = w;
+
+                                        fullConversations.push(toSend);
+
+                                        if(fullConversations.length === length){
+                                            res.send({success:true, numConversations:length,conversations:fullConversations});
+                                        }
+                                    }
+
+                                });
+                        }
+                    });
 
                 });
 
-            }else {
-                res.send({success:false, message:"Could not fetch conversations"});
             }
 
-        });
+        }
+    });
 
 };
 
@@ -56,11 +78,11 @@ module.exports.getConversation = function (req, res) {
 
     Message.find({ conversationId: conversationId})
         .select('createdAt body author')
-        .sort('-createdAt')
-        .populate({
-            path: 'author',
-            select: 'name'
-        })
+        .sort('createdAt')
+        // .populate({
+        //     path: 'author',
+        //     select: 'name'
+        // })
         .exec(function(err, messages) {
             if (err) {
                 res.send({ error: err });

@@ -11,7 +11,8 @@ server.listen(PORT, function () {
 });
 
 let io = require('socket.io').listen(server);
-require('./socket.config')(io);
+let sockets=require('./socket.config');
+sockets.init(io);
 
 mongoose.connect("mongodb://localhost:27017/chat");
 mongoose.connection.on('error', function () {
@@ -24,9 +25,11 @@ mongoose.connection.on('open', function () {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-let routes = require('./routes/chat.routes')(io);
+let routes = require('./routes/chat.routes');
+routes.init(io);
 
-app.use('/chat', routes);
+app.use('/user', require('./routes/user.routes'));
+app.use('/chat', routes.getRouter());
 app.get('/', function (req, res) {
 	res.send('Hello from chat server. Start chatting...');
 });

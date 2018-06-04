@@ -9,5 +9,8 @@ module.exports.init = function(io){
     router.post('/oneConversation', controller.getConversation);
     router.post('/newConversation', controller.newConversation);
     router.post('/reply', controller.sendReply);
+};
+
+module.exports.getRouter = function () {
     return router;
 };
