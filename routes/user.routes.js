@@ -35,3 +35,20 @@ router.post('/login', function (req, res) {
     });
 
 });
+
+router.post('/friends', function (req, res) {
+
+    let userId = req.body.user_id;
+
+    User.find({_id:{$ne:userId}}).exec(function (error, users) {
+
+        if(!error){
+            res.send({success:true, numUsers:users.length, data:users});
+        }else {
+            res.send({success:false});
+            console.log("Getting CONTACTS error" + error);
+        }
+
+    });
+
+});

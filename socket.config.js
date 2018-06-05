@@ -8,7 +8,7 @@ module.exports.init = function (io) {
         socket.on('log me', function (userId) {
 
             global_file.loggedUsers[userId] = socket.id;
-            console.log(userId+ " : " + socket.id);
+            //console.log(userId+ " : " + socket.id);
 
         });
 

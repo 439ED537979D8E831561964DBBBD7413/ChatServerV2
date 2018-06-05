@@ -149,10 +149,6 @@ module.exports.newConversation = function (req, res) {
                                 let toSend = {conversationId:newConversation._id, author:sender, message:composedMessage };
                                 toSend.name = user.name;
                                 toSend.profilePic = user.profilePic;
-                                toSend.author = data.author;
-                                toSend.conversationId = data.conversationId;
-                                toSend.message = data.message;
-
                                 my_io.in(newConversation._id).emit('new message', toSend);
                             }
 
@@ -193,6 +189,39 @@ module.exports.sendReply = function (req, res) {
         }else {
             console.log("CHAT REPLY: "+error);
             res.send({success:false, message:"Message could not sent"});
+        }
+
+    });
+
+};
+
+module.exports.hasConversation = function (req, res) {
+
+    let currentUser = req.body.current_user;
+    let targetUser = req.body.target_user;
+
+    Conversation.findOne({
+        participants:{
+            $all:[currentUser, targetUser]
+        }
+    },{_id:1}).exec(function (error, conversation) {
+
+        if(!error){
+
+            if(conversation){
+                res.send({success:true, exists:true, id:conversation._id});
+
+            }else {
+
+                res.send({success:true, exists:false});
+                //db.conversations.findOne( { participants:[ObjectId("5b152273bab1d45127a38526"),ObjectId("5b15219fbab1d45127a38525")]},{_id:1})
+
+            }
+
+        }else {
+
+            res.send({success:false});
+
         }
 
     });

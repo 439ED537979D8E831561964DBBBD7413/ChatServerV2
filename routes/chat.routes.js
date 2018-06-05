@@ -5,6 +5,7 @@ module.exports.init = function(io){
     //pass io instance
     controller.init(io);
 
+    router.post('/hasConversation', controller.hasConversation);
     router.post('/allConversations', controller.getConversations);
     router.post('/oneConversation', controller.getConversation);
     router.post('/newConversation', controller.newConversation);
