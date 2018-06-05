@@ -38,7 +38,7 @@ module.exports.getConversations = function(req, res){
                         w = conversation.participants[1];
                     }
 
-                    User.findOne({_id:w}).select('name profilePic -_id').exec(function(err, result){
+                    User.findOne({_id:w}).select('name profilePic _id').exec(function(err, result){
                         if(!err){
                             w = result;
                             Message.findOne({'conversationId':conversation._id})
