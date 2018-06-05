@@ -20,9 +20,10 @@ module.exports.init = function (io) {
         });
 
         socket.on('leave', function (conversationId) {
-            if(socket.rooms.indexOf(conversationId)>=0){
-                socket.leave(conversationId);
-            }
+            /*if(socket.rooms.indexOf(conversationId)>=0){
+
+            }*/
+            socket.leave(conversationId);
         });
 
         socket.on('new message', function (data) {
@@ -52,10 +53,10 @@ module.exports.init = function (io) {
 
         });
 
-        socket.on('stop typing', function (data) {
+        socket.on('stop typing', function (conversationId) {
 
             //data contains conversationId
-            io.to(data.conversationId).emit('stop typing');
+            io.to(conversationId).emit('stop typing');
 
         });
 
