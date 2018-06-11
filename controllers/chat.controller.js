@@ -138,7 +138,7 @@ module.exports.newConversation = function (req, res) {
                     }
 
                     //send response
-                    res.send({success:true, conversationId:newConversation._id,message:"Conversation started successfully"});
+                    res.send({success:true, time:newMessage.createdAt, conversationId:newConversation._id,message:"Conversation started successfully"});
 
                     //emit event
                     if(emitEvent){
@@ -185,7 +185,7 @@ module.exports.sendReply = function (req, res) {
     reply.save(function (error, reply) {
 
         if(!error){
-            res.send({success:true, message:"Message successfully sent"});
+            res.send({success:true, time:reply.createdAt, message:"Message successfully sent"});
         }else {
             console.log("CHAT REPLY: "+error);
             res.send({success:false, message:"Message could not sent"});
