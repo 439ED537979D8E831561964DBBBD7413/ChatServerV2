@@ -14,8 +14,8 @@ let io = require('socket.io').listen(server);
 let sockets=require('./socket.config');
 sockets.init(io);
 
-//mongoose.connect("mongodb://localhost:27017/chat");
-mongoose.connect("mongodb://himanshu:a123456789@ds155651.mlab.com:55651/sp-chat-app");
+mongoose.connect("mongodb://localhost:27017/chat");
+//mongoose.connect("mongodb://himanshu:a123456789@ds155651.mlab.com:55651/sp-chat-app");
 mongoose.connection.on('error', function () {
     console.log('Could not connect to database...');
 });

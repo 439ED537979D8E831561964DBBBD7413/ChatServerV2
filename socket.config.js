@@ -49,14 +49,14 @@ module.exports.init = function (io) {
         socket.on('typing', function (data) {
 
            //data contains name and conversationId. Send data.name and handle on client side
-            io.to(data.conversationId).emit('typing', data.name);
+            socket.broadcast.to(data.conversationId).emit('typing', data.name);
 
         });
 
         socket.on('stop typing', function (conversationId) {
 
             //data contains conversationId
-            io.to(conversationId).emit('stop typing');
+            socket.broadcast.to(conversationId).emit('stop typing');
 
         });
 
