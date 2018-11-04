@@ -1,5 +1,5 @@
 const global_file = require('./my_global_file');
-const User = require('./models/user.model');
+const User = require('./user/user.model');
 
 module.exports.init = function (io) {
 

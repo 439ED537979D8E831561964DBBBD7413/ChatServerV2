@@ -1,6 +1,6 @@
-const Conversation = require('../models/converstion.model'),
-    Message = require('../models/message.model'),
-    User = require('../models/user.model'),
+const Conversation = require('./converstion.model'),
+    Message = require('./message.model'),
+    User = require('../user/user.model'),
     global_file = require('../my_global_file');
 
 let my_io = undefined;

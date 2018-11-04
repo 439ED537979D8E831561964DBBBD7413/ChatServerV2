@@ -1,7 +1,7 @@
 const router = require('express').Router();
 module.exports.init = function(io){
 
-    const controller = require('../controllers/chat.controller');
+    const controller = require('./chat.controller');
     //pass io instance
     controller.init(io);
 
