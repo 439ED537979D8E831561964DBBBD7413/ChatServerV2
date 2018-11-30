@@ -70,8 +70,8 @@ module.exports.ForgetPassword = function(req, res){
                 res.send({success:false, message:"User Not Found."});
             }else{
                 let token = jwt.sign({user_id:user._id}, config.SECRET_KEY, {expiresIn: 1800000});
-                let message = "Password Reset Token: \n\n " + token + "\n\n This will expire in 30 minutes.";
-                require('../utility/utils').sendEmail(user.name, email, message);
+                let text = "Password Reset Token: \n\n " + token + "\n\n This will expire in 30 minutes.";
+                require('../utility/utils').sendEmail(user.name, email, text);
                 res.send({success:true, message:"Password Reset Token has been sent to your email."});
             }
         })
@@ -109,5 +109,39 @@ module.exports.ForgetPassword = function(req, res){
     }else{
         res.send({success:false, message:"Invalid Operation Requested"});
     }
+
+};
+
+module.exports.UsersForMe = function(req, res){
+
+    const userId = req.body.user_id;
+    const Friend = require('../friends/friends.model');
+
+    Friend.find({from:userId}).select('-_id to').exec((err, friends)=>{
+
+        if(!err){
+
+            User.find({
+                $and:[
+                    {_id:{ $nin: friends}},
+                    {_id:{ $ne: userId }}
+                ]
+                
+            }).select('name profilePic about _id')
+            .exec((err, users)=>{
+
+                if(!err){
+                    res.send({success:true, data:users, message:"Everything OK"});
+                }else{
+                    res.send({success:false, message:"Error: "+err});
+                }
+
+            });
+
+        }else{
+            res.send({success:false, message:"Error: "+err});
+        }
+
+    });
 
 };

@@ -5,6 +5,8 @@ module.exports.init = function (io) {
 
     io.on('connection', function (socket) {
 
+        //socket.emit("message", "HELLO");
+
         socket.on('log me', function (userId) {
 
             global_file.loggedUsers[userId] = socket.id;

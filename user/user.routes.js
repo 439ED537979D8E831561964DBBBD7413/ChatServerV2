@@ -6,5 +6,6 @@ router.put('/login', controller.Login);
 router.put('/resetPassword/:MODE', controller.ForgetPassword);
 router.use('/friend', require('../friends/friends.routes'));
 router.put('/profile', );
+router.put('/forme', controller.UsersForMe);
 
 module.exports = router;

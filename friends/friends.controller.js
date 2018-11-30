@@ -15,7 +15,7 @@ module.exports.NewFriendship = function(req, res){
 module.exports.GetFriendship = function(req, res){
 
     const userId = req.body.user_id;
-    Friend.find({from:userId}).select('to').populate('to', '_id name profilePic')
+    Friend.find({from:userId}).select('to').populate('to', '_id name about profilePic')
     .then((friendships)=>{
 
         res.send({success:true, data:friendships, message:"Everything OK"});
@@ -29,6 +29,13 @@ module.exports.GetFriendship = function(req, res){
 
 module.exports.DeleteFriendship = function(req, res){
 
-    
+    const id = req.body._id;
+    Friend.deleteOne({_id:id})
+    .then((result)=>{
+        res.send({success:true, message:"Everything OK"});
+    })
+    .catch((err)=>{
+        res.send({success:false, message:"Error deleting friend: "+err});
+    });
 
 };

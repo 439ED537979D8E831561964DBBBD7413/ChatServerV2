@@ -3,17 +3,17 @@ const nodemailer = require('nodemailer');
 module.exports.sendEmail = function(email, message){
 
     let smtpConfig = {
-        host: 'smtp.example.com',
-        port: 587,
+        host: 'smtp.gmail.com',
+        port: 465,
         secure: false, 
         auth: {
-            user: 'username',
-            pass: 'password'
+            user: 'himanshu10nain@gmail.com',
+            pass: 'Nainhimanshu386'
         }
     };
 
     let message = {
-        from: 'sender@server.com',
+        from: '"no-reply"<himanshu10nain@gmail.com>',
         to: email,
         subject: 'Password Reset Mail',
         text: message,
